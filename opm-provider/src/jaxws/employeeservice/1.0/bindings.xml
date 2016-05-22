@@ -1,0 +1,13 @@
+<jaxws:bindings
+	wsdlLocation="../../../gen/wsdl/opm/services/authentication/1.0/wsdl/employeeservice.wsdl"
+	xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<jaxws:bindings node="wsdl:definitions">
+		<jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
+		<jaxws:package name="com.taggy.service.authentication.v1" />
+	</jaxws:bindings>
+
+
+	<!-- Check for package customization -->
+</jaxws:bindings>

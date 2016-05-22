@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.taggy.wm</groupId>
+	<artifactId>opm-provider</artifactId>
+	<packaging>war</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>opm-provider Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<taggy.manifest.packagename>com.taggy.wm</taggy.manifest.packagename>
+		<saveClasspath>false</saveClasspath>
+		<webcontent.dir>src/main/webapp</webcontent.dir>
+		<argLine>-Xms1024m -Xmx1024m -XX:PermSize=328m -Dfile.encoding=UTF-8</argLine>
+		<m2eclipse.wtp.contextRoot>/OPM/WS/</m2eclipse.wtp.contextRoot>
+
+
+		<gen.dir>src/gen</gen.dir>
+		<genSource.dir>${gen.dir}/java</genSource.dir>
+		<genResource.dir>${gen.dir}/resources</genResource.dir>
+		<genWsdl.dir>${gen.dir}/wsdl</genWsdl.dir>
+	</properties>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>opm-provider</finalName>
+
+		<resources>
+			<resource>
+				<directory>${gen.dir}/wsdl</directory>
+			</resource>
+			<resource>
+				<directory>${gen.dir}/java</directory>
+			</resource>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+		</resources>
+
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.taggy.feature</groupId>
+									<artifactId>taggy-schema</artifactId>
+									<version>1.0.0</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.basedir}/${genWsdl.dir}/</outputDirectory>
+									<includes>**/*.wsdl,**/*.xsd</includes>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${project.basedir}/${genSource.dir}/</sourceRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>${project.basedir}/${genWsdl.dir}/opm/services/authentication/1.0/wsdl/employeeservice.wsdl</wsdl>
+									<bindingFiles>
+										<bindingFile>${project.basedir}/src/jaxws/employeeservice/1.0/bindings.xml</bindingFile>
+									</bindingFiles>
+
+								</wsdlOption>
+							</wsdlOptions>
+
+						</configuration>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+</project>
